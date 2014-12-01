@@ -96,9 +96,14 @@ chapters = ["one","two", "three", "four", "five", "six", "seven", "eight", "nine
 
 outputFile = open("book.txt", 'w')
 for chapter in chapters: 
+	outputFile.write("\n\n\n\n\n\n\n\n\n");
+	outputFile.write(chapter);
+	outputFile.write("\n\n\n\n\n\n\n\n\n");
+
 	f = open(chapter + ".txt")
 	lines = f.readlines()
 	for line in lines: 
+		outputFile.write("\t")
 		outputFile.write(line);
 	f.close()
 outputFile.close()
