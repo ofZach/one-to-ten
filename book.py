@@ -14,6 +14,9 @@ lookWords = []
 # note this script hits a website kind of hard.  
 # I'd be happy to find a better database of phrases to use or a more official API
 
+def is_ascii(s):
+    return all(ord(c) < 128 for c in s)
+
 def loadPage( urlToOpen, word ):
 	print "loading " + urlToOpen
 	page = urllib.urlopen(urlToOpen).read()
@@ -35,12 +38,18 @@ def grabWords( word ):
 	for letter in allTheLetters:
 		url = "http://www.onelook.com/?w=*" + letter + " " + word + "&ls=a"
 		loadPage(url, word)
+	for letter in allTheLetters:
+		url = "http://www.onelook.com/?w=*" + letter + word + "&ls=a"
+		loadPage(url, word)
 
 	for letter in allTheLetters:
 		url = "http://www.onelook.com/?w=" + word + " " + letter + "*&ls=a"
 		loadPage(url, word)
+	for letter in allTheLetters:
+		url = "http://www.onelook.com/?w=" + word + letter + "*&ls=a"
+		loadPage(url, word)
 
-	url = "http://www.onelook.com/?w=* " + word + " *&ls=a"
+	url = "http://www.onelook.com/?w=*" + word + "*&ls=a"
 	loadPage(url, word)
 
 
@@ -94,6 +103,8 @@ chapters = ["one","two", "three", "four", "five", "six", "seven", "eight", "nine
 # 	outputFile.close()
 
 
+
+
 outputFile = open("book.txt", 'w')
 for chapter in chapters: 
 	outputFile.write("\n\n\n\n\n\n\n\n\n");
@@ -103,8 +114,10 @@ for chapter in chapters:
 	f = open(chapter + ".txt")
 	lines = f.readlines()
 	for line in lines: 
-		outputFile.write("\t")
-		outputFile.write(line);
+		if "-" not in line and "+" not in line and "#" not in line:
+			if is_ascii(line):
+				outputFile.write(line.rstrip());
+				outputFile.write(", ")
 	f.close()
 outputFile.close()
 
