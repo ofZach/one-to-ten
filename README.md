@@ -1,4 +1,4 @@
-one-to-ten
+one to ten
 ==========
 
 NaNoGenMo 2014
